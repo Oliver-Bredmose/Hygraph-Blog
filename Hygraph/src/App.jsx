@@ -19,6 +19,8 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
 
+//  Light/dark mode switch med custom styling der gær at den skrifter fra sol til måne
+
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
   width: 62,
   height: 34,
@@ -68,7 +70,9 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 function App() {
   const [data, setData] = useState(null)
   const [darkMode, setDarkMode] = useState(false)
-  const [selectedBlog, setSelectedBlog] = useState(null) // ✅ Tilføjet
+
+  // søgre for at dialoggen virker og åbner 
+  const [selectedBlog, setSelectedBlog] = useState(null)
 
   const theme = createTheme({
   palette: {
@@ -90,7 +94,9 @@ function App() {
 
   const blogs = data ? data.blogs.map((blog, index) => {
     return (
+      // dette er det der søgre for at siden er responsiv
       <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
+
       <Card sx={{ maxWidth: 345 }}>
       <CardActionArea onClick={() => setSelectedBlog(blog)}> 
       <CardMedia
@@ -104,12 +110,12 @@ function App() {
         <h2>{blog.headline}</h2>
       </Typography>
       <li key={index}>
-        {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>{blog.textContent?.text}</Typography> <br /> */}
+        {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>{blog.textContent?.text}</Typography> */}
 
         {/* <Typography variant='body2'> {blog.author} </Typography> */}
-
         <Typography variant='body2'> {new Date(blog.date).getDate()}/{new Date(blog.date).getMonth()}/{new Date(blog.date).getFullYear()}
         {new Date(blog.date).getUTCHours()}:{new Date(blog.date).getMinutes()}</Typography>
+
       </li>
         </CardContent>
       </CardActionArea>
@@ -132,10 +138,10 @@ function App() {
         {blogs}
       </Grid>
 
-      {/* ✅ Tilføjet Dialog */}
       <Dialog open={!!selectedBlog} onClose={() => setSelectedBlog(null)} maxWidth="sm" fullWidth>
         {selectedBlog && (
           <>
+          {/* Dette er dialoggen den viser disse ting når den åbnes */}
             <DialogTitle>{selectedBlog.headline}</DialogTitle>
             <DialogContent dividers>
               <Box component="img" src={selectedBlog.image.url} alt={selectedBlog.headline} sx={{ width: '100%', borderRadius: 1, mb: 2 }} />
