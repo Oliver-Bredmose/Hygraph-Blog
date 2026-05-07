@@ -12,6 +12,11 @@ import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { Grid, Switch } from '@mui/material';
 import CssBaseline from '@mui/material/CssBaseline';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
+import Button from '@mui/material/Button';
 
 
 const MaterialUISwitch = styled(Switch)(({ theme }) => ({
@@ -63,6 +68,7 @@ const MaterialUISwitch = styled(Switch)(({ theme }) => ({
 function App() {
   const [data, setData] = useState(null)
   const [darkMode, setDarkMode] = useState(false)
+  const [selectedBlog, setSelectedBlog] = useState(null) // ✅ Tilføjet
 
   const theme = createTheme({
   palette: {
@@ -86,7 +92,7 @@ function App() {
     return (
       <Grid key={index} size={{ xs: 12, sm: 6, md: 4, lg: 3 }}>
       <Card sx={{ maxWidth: 345 }}>
-      <CardActionArea>
+      <CardActionArea onClick={() => setSelectedBlog(blog)}> 
       <CardMedia
           component="img"
           height="140"
@@ -98,11 +104,12 @@ function App() {
         <h2>{blog.headline}</h2>
       </Typography>
       <li key={index}>
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>{blog.textContent?.text}</Typography> <br />
+        {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>{blog.textContent?.text}</Typography> <br /> */}
 
-        <Typography variant='body2'> {blog.author} </Typography>
+        {/* <Typography variant='body2'> {blog.author} </Typography> */}
 
-        <Typography variant='body2'> {new Date(blog.date).getDate()}/{new Date(blog.date).getMonth()}/{new Date(blog.date).getFullYear()}    {new Date(blog.date).getUTCHours()}:{new Date(blog.date).getMinutes()}</Typography>
+        <Typography variant='body2'> {new Date(blog.date).getDate()}/{new Date(blog.date).getMonth()}/{new Date(blog.date).getFullYear()}
+        {new Date(blog.date).getUTCHours()}:{new Date(blog.date).getMinutes()}</Typography>
       </li>
         </CardContent>
       </CardActionArea>
@@ -124,6 +131,24 @@ function App() {
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ px: 2 }}>
         {blogs}
       </Grid>
+
+      {/* ✅ Tilføjet Dialog */}
+      <Dialog open={!!selectedBlog} onClose={() => setSelectedBlog(null)} maxWidth="sm" fullWidth>
+        {selectedBlog && (
+          <>
+            <DialogTitle>{selectedBlog.headline}</DialogTitle>
+            <DialogContent dividers>
+              <Box component="img" src={selectedBlog.image.url} alt={selectedBlog.headline} sx={{ width: '100%', borderRadius: 1, mb: 2 }} />
+              <Typography variant="body1" gutterBottom>{selectedBlog.textContent?.text}</Typography>
+              <Typography variant="body2" color="text.secondary">{selectedBlog.author}</Typography>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setSelectedBlog(null)}>Luk</Button>
+            </DialogActions>
+          </>
+        )}
+      </Dialog>
+
     </ThemeProvider>
   )
 }
