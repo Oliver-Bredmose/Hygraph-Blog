@@ -1,0 +1,17 @@
+import { gql } from "graphql-request"
+
+export const getSingleBlog = gql`
+  query {
+    blogs(orderBy: date_DESC) {
+      headline
+      textContent {
+        text
+      }
+      image {
+        url
+      }
+      author
+      date
+    }
+  }
+`
